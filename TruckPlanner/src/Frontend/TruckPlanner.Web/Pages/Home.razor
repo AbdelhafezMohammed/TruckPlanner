@@ -1,0 +1,78 @@
+﻿@page "/"
+@inject HttpClient Http
+
+<PageTitle>Drivers</PageTitle>
+
+<h1>Drivers</h1>
+
+
+
+@if (Drivers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (Drivers.Count == 0)
+{
+    <p><em>No drivers information available.</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>BirthDate</th>
+                <th>Driving License</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var driver in Drivers)
+            {
+                <tr>
+                    <td>@driver.Id</td>
+                    <td>@driver.Name</td>
+                    <td>@driver.BirthDate</td>
+                    <td>@driver.DrivingLicenseNumber</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => ViewDriverDetails(driver.Id)">
+                            <i class="fas fa-edit">
+                                Details
+                            </i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<DriverView> Drivers;
+
+    public class DriverView
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public DateTime BirthDate { get; set; }
+        public int DrivingLicenseNumber { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync("http://localhost:5150/api/Driver/drivers");
+        if (response.IsSuccessStatusCode)
+        {
+            Drivers = await response.Content.ReadFromJsonAsync<List<DriverView>>();
+        }
+    }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    private void ViewDriverDetails(int driverId)
+    {
+        NavigationManager.NavigateTo($"/driverdetails/{driverId}");
+    }
+}

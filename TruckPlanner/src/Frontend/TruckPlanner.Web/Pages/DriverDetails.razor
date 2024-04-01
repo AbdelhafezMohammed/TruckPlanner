@@ -1,0 +1,130 @@
+﻿@page "/driverdetails/{driverId:int}"
+@inject HttpClient Http
+
+<PageTitle>Driver Details</PageTitle>
+
+
+@if (Driver != null)
+{
+    <h3>Driver Details</h3>
+
+    <div class="driver-details">
+        <div>
+            <strong>Id:</strong>
+            <span>@Driver.Id</span>
+        </div>
+        <div>
+            <strong>Name:</strong>
+            <span>@Driver.Name</span>
+        </div>
+        <div>
+            <strong>Birth Date:</strong>
+            <span>@Driver.BirthDate.ToShortDateString()</span>
+        </div>
+        <div>
+            <strong>Driving License Number:</strong>
+            <span>@Driver.DrivingLicenseNumber</span>
+        </div>
+        <div>
+            <strong>Age:</strong>
+            <span>@Driver.Age</span>
+        </div>
+        <div>
+            <strong>Truck Model Name:</strong>
+            <span>@Driver.Truck.ModelName</span>
+        </div>
+        <div>
+            <strong>Truck VIN:</strong>
+            <span>@Driver.Truck.Vin</span>
+        </div>
+    </div>
+
+    @if (Driver.TripPlans != null && Driver.TripPlans.Any())
+    {
+        <h3>Trip Plans</h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Trip Start Location</th>
+                    <th>Trip End Location</th>
+                    <th>Trip Start Date</th>
+                    <th>Trip End Date</th>
+                    <th>Distance (km)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tripPlan in Driver.TripPlans)
+                {
+                    <tr>
+                        <td>@tripPlan.TripStartCountry, @tripPlan.TripStartCity</td>
+                        <td>@tripPlan.TripEndCountry, @tripPlan.TripEndCity</td>
+                        <td>@tripPlan.TripStartDate.ToShortDateString()</td>
+                        <td>@tripPlan.TripEndDate.ToShortDateString()</td>
+                        <td>@tripPlan.DistanceKm</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No trip plans available.</p>
+    }
+}
+else
+{
+    <p>No driver information available.</p>
+}
+
+
+@code {
+
+    [Parameter]
+    public int driverId { get; set; }
+
+
+    private DriverView Driver;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.GetAsync($"http://localhost:5150/api/Driver/drivers/{driverId}");
+        if (response.IsSuccessStatusCode)
+        {
+            Driver = await response.Content.ReadFromJsonAsync<DriverView>();
+        }
+    }
+
+    public class DriverView
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public DateTime BirthDate { get; set; }
+        public int DrivingLicenseNumber { get; set; }
+        public int Age { get; set; }
+        public TruckView Truck { get; set; }
+        public List<TripPlanView> TripPlans { get; set; }
+    }
+
+    public class TruckView
+    {
+        public string ModelName { get; set; }
+        public string Vin { get; set; }
+    }
+
+    public class TripPlanView
+    {
+        public int Id { get; set; }
+        public double TripStartLatitude { get; set; }
+        public double TripStartLongitude { get; set; }
+        public double TripEndLatitude { get; set; }
+        public double TripEndLongitude { get; set; }
+        public DateTime TripStartDate { get; set; }
+        public DateTime TripEndDate { get; set; }
+        public string? TripStartCountry { get; set; }
+        public string? TripStartCity { get; set; }
+        public string? TripEndCountry { get; set; }
+        public string? TripEndCity { get; set; }
+        public string? DistanceKm { get; set; }
+    }
+}
