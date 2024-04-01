@@ -22,7 +22,7 @@ Out of scope: Developing a GPS emulator that periodically sends truck locations 
  
  2- Using Terminal or CMD run the command `dotnet restore` to retore nuget packages
  
- 3- Navigate to backend\TruckPlan.API
+ 3- Navigate to src/backend/TruckPlan/TruckPlan.API
  
  4- Using Terminal or CMD run the command `dotnet run`
 
