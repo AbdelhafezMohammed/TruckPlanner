@@ -1,5 +1,18 @@
-# TruckPlanner
+# Truck Planner
 
+# Assumptions
+
+I created 3 entities representing the domain:
+- Driver entity that contains driver's personal information 
+- Truck entity that contains trucks basic info 
+- Trip Plan entity which contains all information about the trip like coordinates, date, and distance t
+
+I used Google Geocoding API to find truck location based on coordinates and Distance Matrix API to calculate distance 
+
+https://developers.google.com/maps/documentation/geocoding
+https://developers.google.com/maps/documentation/distance-matrix/overview
+
+Out of scope: Developing a GPS emulator that periodically sends truck locations using Redis Pub/Sub and sends updates to the UI in real-time over WebSockets using SignalR.
 
 # How to run the solution:
 
@@ -9,7 +22,7 @@
  
  2- Using Terminal or CMD run the command `dotnet restore` to retore nuget packages
  
- 3- Navigate to backend\Webshop.API
+ 3- Navigate to backend\TruckPlan.API
  
  4- Using Terminal or CMD run the command `dotnet run`
 
@@ -39,9 +52,9 @@
 
  **How to test:**
  
-- Use your browser to open http://localhost:5150/swagger/index.html for API documentation and testing
+- Use your browser to open http://localhost:5150/swagger/index.html for API documentation 
 
-- Use your browser to open http://localhost:5090 for front-end
+- Use your browser to open http://localhost:5160/ for front-end
 
 # Technology stack
 
@@ -60,7 +73,7 @@ Redis
 
 Docker
 
-Dotnet SDK V 8.0.202
+Dotnet SDK V 8.0.203
 
 Dotnet CLI
 
