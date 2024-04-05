@@ -6,7 +6,7 @@ namespace TruckPlan.Service.Integrations
     public class GoogleLocationServices : IGoogleLocationServices
     {
         private const string ApiBaseUri = "https://maps.googleapis.com/maps/api";
-        private const string ApiKey = "AIzaSyDDVVVUe9Pu_52c1UljTJQYRINkPGInBM4";
+        private const string ApiKey = "";
         private readonly HttpClient _httpClient;
         public GoogleLocationServices(
             IHttpClientFactory clientFactory)
